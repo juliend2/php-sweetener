@@ -7,45 +7,29 @@ class Parser {
   }
 
   public function parse() {
-    $semicol_lines = array();
+
     $lines = explode("\n", $this->sweet_code);
-    foreach ($lines as $key => $line) {
 
-      if (
-         trim($line) == '' # is empty
-      || preg_match('/^(class|while|function|if|else|elseif|public|private|static|abstract)\s?/', trim($line)) # starts with a keyword that precedes something that doesnt end with a semicolon
-      || preg_match('/^\.$/', trim($line)) # ends with a dot
-      ) { 
-        # as is
-        $semicol_lines[] = $line;
-
-      # put a ';' at the end
-      } else {
-        $semicol_lines[] = $line . ';';
-
-      }
-    }
-
-    # Put Defines
-    $define_lines = array();
-    foreach ($semicol_lines as $key => $line) {
-      if (preg_match('/^([_A-Z][_A-Z]*)\s?=\s?(.*);$/', $line, $matches)) {
-        $define_lines[] = 'define("'.$matches[1].'", '.$matches[2].');';
-      } else {
-        # as is
-        $define_lines[] = $line;
-      }
-    }
-
-    # Put Braces
+    $semicol_lines = $this->add_semicolons($lines);
+    $define_lines = $this->add_defines($semicol_lines);
 
     $lines = $this->without_empty_lines($define_lines);
     $lines[] = "\n";
 
+    $brace_lines = $this->add_braces($lines);
+
+    # remove 3 empty lines in a row
+    $lines = split("\n", join("\n\n", split("\n\n\n", join("\n", $brace_lines))));
+
+    $outputter = new Outputter($lines);
+    return $outputter->get_string();
+  }
+
+  private function add_braces($lines) {
     $brace_lines = array();
     $level = 0;
     foreach ($lines as $key => $line) {
-      $new_level = $this->indent_level($line);
+      $new_level = $this->indent_level_for($line);
 
       if ($new_level == $level) {
         $brace_lines[] = $line;
@@ -59,10 +43,14 @@ class Parser {
       }
       $level = $new_level;
     }
-
     $lines = split("\n", join("\n", $brace_lines));
+    return $this->indent_braces($lines);
+  }
+
+  private function indent_braces($lines) {
     $brace_lines = array();
     $level = 0;
+    $new_level = $level;
     foreach ($lines as $key => $line) {
       # opening brace means upper lever
       if (preg_match('/\{/', trim($line))) { 
@@ -89,15 +77,44 @@ class Parser {
       }
       $level = $new_level;
     }
-
-    # remove 3 empty lines in a row
-    $brace_lines = split("\n", join("\n\n", split("\n\n\n", join("\n", $brace_lines))));
-
-    $outputter = new Outputter($brace_lines);
-    return $outputter->get_string();
+    return $brace_lines;
   }
 
-  private function indent_level($line) {
+  private function add_defines($lines) {
+    $define_lines = array();
+    foreach ($lines as $key => $line) {
+      if (preg_match('/^([_A-Z][_A-Z]*)\s?=\s?(.*);$/', $line, $matches)) {
+        $define_lines[] = 'define("'.$matches[1].'", '.$matches[2].');';
+      } else {
+        # as is
+        $define_lines[] = $line;
+      }
+    }
+    return $define_lines;
+  }
+
+  private function add_semicolons($input_lines) {
+    $semicol_lines = array();
+    foreach ($input_lines as $key => $line) {
+      if (
+         trim($line) == '' # is empty
+      || preg_match('/^(class|while|function|if|else|elseif|public|private|static|abstract)\s?/', trim($line)) # starts with a keyword that precedes something that doesnt end with a semicolon
+      || preg_match('/^\.$/', trim($line)) # ends with a dot
+      ) { 
+        # as is
+        $semicol_lines[] = $line;
+
+      # put a ';' at the end
+      } else {
+        $semicol_lines[] = $line . ';';
+
+      }
+    }
+    return $semicol_lines;
+  }
+
+
+  private function indent_level_for($line) {
     $line_indent = preg_match('/^(\s*)\S/', $line, $matches);
     if ($line_indent) {
       $indent_count = substr_count($line, $this->indent);
