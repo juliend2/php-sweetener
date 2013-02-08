@@ -1,0 +1,17 @@
+#!/usr/bin/php
+<?php
+
+include realpath(dirname(__FILE__).'/../phpsweetener.php');
+$path = $argv[1];
+if (empty($path)) {
+  print "You need to provide a file name to compile.\n";
+  die;
+}
+$sweet_code = file_get_contents($path);
+
+$sweetener = new Parser($sweet_code);
+$php_code = $sweetener->parse();
+
+echo $php_code;
+
+# vim: set filetype=php
