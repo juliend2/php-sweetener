@@ -1,9 +1,14 @@
 <?php
 
 class Parser {
-  function __construct($sweet_code) {
+  function __construct($sweet_code='') {
     $this->indent = '  ';
+    $this->set_code($sweet_code);
+  }
+
+  public function set_code($sweet_code) {
     $this->sweet_code = $sweet_code;
+    return $this;
   }
 
   public function parse() {
