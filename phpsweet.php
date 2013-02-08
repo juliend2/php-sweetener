@@ -77,7 +77,6 @@ function without_empty_lines($lines) {
 
 $lines = without_empty_lines($define_lines);
 $lines[] = "\n";
-$lines[] = "\n";
 
 $brace_lines = array();
 $level = 0;
@@ -85,17 +84,44 @@ foreach ($lines as $key => $line) {
   $new_level = indent_level($line);
 
   if ($new_level == $level) {
-    // echo $new_level.' is equal to '.$level."\n";
     $brace_lines[] = $line;
 
   } elseif ($new_level > $level) {
-    // echo $new_level.' is greater than '.$level."\n";
     $brace_lines[] = "{\n".$line;
 
   } elseif ($new_level < $level) {
-    // echo $new_level.' is lower than '.$level."\n";
     $level_difference = $level - $new_level;
     $brace_lines[] = str_repeat("}\n", $level_difference) . $line;
+  }
+  $level = $new_level;
+}
+
+$lines = split("\n", join("\n", $brace_lines));
+$brace_lines = array();
+$level = 0;
+foreach ($lines as $key => $line) {
+  # opening brace means upper lever
+  if (preg_match('/\{/', trim($line))) { 
+    $new_level += 1;
+  } elseif (preg_match('/\}/', trim($line))) {
+    $new_level -= 1;
+  }
+
+  # Indent
+  if ($new_level > $level) {
+    $brace_lines[] = str_repeat($indent, $level) . $line;
+
+  # Dedent
+  } elseif ($new_level < $level) {
+    $brace_lines[] = str_repeat($indent, $new_level) . $line;
+    # vertical whitespace
+    if ($new_level == 0) {
+      $brace_lines[] = "\n";
+    }
+
+  # Same level indent
+  } else {
+    $brace_lines[] = $line;
   }
   $level = $new_level;
 }
