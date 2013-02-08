@@ -1,4 +1,3 @@
-
 $joie = "Hello"
 $num = 232
 HOME = 23
@@ -10,7 +9,10 @@ function hey($cool)
 while ($truthy) 
   if ($truthy)
     $i += 1
-  break
+  elseif (empty($val))
+    $i += 2
+  else
+    $i += 3
 
 class Joie
   function __construct($arg1)
