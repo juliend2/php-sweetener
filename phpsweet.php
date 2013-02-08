@@ -126,4 +126,6 @@ foreach ($lines as $key => $line) {
   $level = $new_level;
 }
 
+# remove 3 empty lines in a row
+$brace_lines = split("\n", join("\n\n", split("\n\n\n", join("\n", $brace_lines))));
 print_prog($brace_lines);
