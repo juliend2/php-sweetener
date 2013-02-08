@@ -31,5 +31,10 @@ Here is an example of a "Sweet PHP" program:
 Compiling a Sweet PHP program
 ---
 
-    php phpsweetener.php ./path/to/prog.phps
+    bin/phpsweeten ./path/to/prog.phps
+
+License
+---
+
+MIT.
 
