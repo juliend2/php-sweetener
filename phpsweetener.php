@@ -12,8 +12,15 @@ function print_prog($lines) {
   print get_prog_string($lines);
 }
 
+
+$path = $argv[1];
+if (empty($path)) {
+  print "You need to provide a file name to compile.\n";
+  die;
+}
+
 $indent = '  ';
-$sweet = file_get_contents("testprog.phps");
+$sweet = file_get_contents($path);
 
 $semicol_lines = array();
 $lines = explode("\n", $sweet);
@@ -21,9 +28,7 @@ foreach ($lines as $key => $line) {
 
   if (
      trim($line) == '' # is empty
-  || preg_match('/\)$/', trim($line)) # ends with a closing parenthesis
-  || preg_match('/^class /', trim($line)) # starts with a class
-  || preg_match('/^else$/', trim($line)) # has an else
+  || preg_match('/^(class|while|function|if|else|elseif|public|private|static|abstract)\s?/', trim($line)) # starts with a keyword that precedes something that doesnt end with a semicolon
   || preg_match('/^\.$/', trim($line)) # ends with a dot
   ) { 
     # as is
@@ -129,3 +134,4 @@ foreach ($lines as $key => $line) {
 # remove 3 empty lines in a row
 $brace_lines = split("\n", join("\n\n", split("\n\n\n", join("\n", $brace_lines))));
 print_prog($brace_lines);
+
