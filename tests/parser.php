@@ -172,6 +172,7 @@ if (true)
   something("once");
 }
 ');
+
     $this->assertEqual(t_parse($this, 
 'if (true)
   something("once")
@@ -187,6 +188,7 @@ else
   something("else");
 }
 ');
+
     $this->assertEqual(t_parse($this, 
 'if (true)
   something("once")
@@ -206,6 +208,34 @@ elseif (false)
 else
 {
   something("else");
+}
+');
+
+    $this->assertEqual(t_parse($this, 
+'if (true)
+  $var = something("once")
+  $var->method()
+elseif (false)
+  something("falsey")
+  do("something else")
+else
+  something("else")
+  another("else")
+'), 
+'if (true)
+{
+  $var = something("once");
+  $var->method();
+}
+elseif (false)
+{
+  something("falsey");
+  do("something else");
+}
+else
+{
+  something("else");
+  another("else");
 }
 ');
   }
