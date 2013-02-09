@@ -147,6 +147,18 @@ method3();');
   }
 }
 ');
+//     $this->assertEqual(t_parse($this, 
+// 'interface iTemplate
+//   public function setVariable($name, $var)
+//   public function getHtml($template)
+//   '), 
+// '
+// interface iTemplate
+// {
+//   public function setVariable($name, $var);
+//   public function getHtml($template);
+// }
+// ');
   }
 
   function testWhile() {
@@ -267,6 +279,19 @@ else
 }
 ');
   }
+
+  function testForAndForeach() {
+    $this->assertEqual(t_parse($this, 
+'for ($i = 0; $i < count($arr); $i++)
+  print $arr[$i]
+'), 
+'for ($i = 0; $i < count($arr); $i++)
+{
+  print $arr[$i];
+}
+');
+  }
+
 }
 
 

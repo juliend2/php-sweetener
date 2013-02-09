@@ -105,7 +105,7 @@ class Parser {
     foreach ($input_lines as $key => $line) {
       if (
          trim($line) == '' # is empty
-      || preg_match('/^(class|while|function|if|else|elseif|public|private|static|abstract)\s?/', trim($line)) # starts with a keyword that precedes something that doesnt end with a semicolon
+      || preg_match('/^(class|function|if|else|elseif|while|for|foreach|public|private|static|interface|abstract)\s?/', trim($line)) # starts with a keyword that precedes something that doesnt end with a semicolon
       || preg_match('/\.$/', trim($line)) # ends with a dot
       || preg_match('/^#/', trim($line)) # starts with a #
       || preg_match('|^//|', trim($line)) # starts with a //
