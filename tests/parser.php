@@ -8,6 +8,10 @@ class TestParser extends UnitTestCase {
     $this->parser = new Parser();
   }
 
+  function testComments() {
+    $this->assertEqual(t_parse($this, '# comment'), '# comment');
+    $this->assertEqual(t_parse($this, '// comment'), '// comment');
+  }
   function testVariable() {
     $this->assertEqual(t_parse($this, '$str'), '$str;');
     $this->assertEqual(t_parse($this, '$variable = 2'), '$variable = 2;');
