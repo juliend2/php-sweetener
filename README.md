@@ -36,7 +36,7 @@ Compiling a Sweet PHP program
 TODO
 ---
 
-* Interface definition (methods don't have a ';' at the end)
+* Abstract class and Interface definition (methods don't have a ';' at the end)
 * Multi-line comments
 * Multi-line strings (I want to implement CoffeeScript-like multi-line strings,
   that would compile to Heredoc strings.
