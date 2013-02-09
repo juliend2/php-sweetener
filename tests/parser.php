@@ -238,6 +238,34 @@ else
   another("else");
 }
 ');
+
+    $this->assertEqual(t_parse($this, 
+'if (true)
+  $var = something("once")
+elseif (false)
+  something("falsey")
+elseif (1)
+  something("truthy")
+else
+  something("else")
+'), 
+'if (true)
+{
+  $var = something("once");
+}
+elseif (false)
+{
+  something("falsey");
+}
+elseif (1)
+{
+  something("truthy");
+}
+else
+{
+  something("else");
+}
+');
   }
 }
 
