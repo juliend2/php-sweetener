@@ -149,6 +149,66 @@ method3();');
 ');
   }
 
+  function testWhile() {
+    $this->assertEqual(t_parse($this, 
+'
+while (true)
+  something("infinitely")
+'), 
+'while (true)
+{
+  something("infinitely");
+}
+');
+  }
+  function testIfs() {
+    $this->assertEqual(t_parse($this, 
+'
+if (true)
+  something("once")
+'), 
+'if (true)
+{
+  something("once");
+}
+');
+    $this->assertEqual(t_parse($this, 
+'if (true)
+  something("once")
+else
+  something("else")
+'), 
+'if (true)
+{
+  something("once");
+}
+else
+{
+  something("else");
+}
+');
+    $this->assertEqual(t_parse($this, 
+'if (true)
+  something("once")
+elseif (false)
+  something("falsey")
+else
+  something("else")
+'), 
+'if (true)
+{
+  something("once");
+}
+elseif (false)
+{
+  something("falsey");
+}
+else
+{
+  something("else");
+}
+');
+  }
 }
 
 

@@ -26,6 +26,8 @@ class Parser {
     # remove 3 empty lines in a row
     $lines = split("\n", join("\n\n", split("\n\n\n", join("\n", $brace_lines))));
 
+    $lines = $this->remove_lines_before_elses($lines);
+
     $outputter = new Outputter($lines);
     return $outputter->get_string();
   }
@@ -143,6 +145,22 @@ class Parser {
     $new_lines = array();
     foreach ($lines as $line) {
       if (trim($line) != '') $new_lines[] = $line;
+    }
+    return $new_lines;
+  }
+
+  private function remove_lines_before_elses($lines) {
+    $new_lines = array();
+    foreach ($lines as $key => $line) {
+      if (!empty($lines[$key+1]) && 
+      (
+        trim($lines[$key+1]) == 'else'
+        || preg_match('/^elseif /', $lines[$key+1])
+      )) {
+        # dont add this line
+      } else {
+        $new_lines[] = $line;
+      }
     }
     return $new_lines;
   }
