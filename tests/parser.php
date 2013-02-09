@@ -33,6 +33,50 @@ class TestParser extends UnitTestCase {
     $this->assertEqual(t_parse($this, '$obj->prop1->method()'), '$obj->prop1->method();');
     $this->assertEqual(t_parse($this, '$obj->method()->prop1'), '$obj->method()->prop1;');
     $this->assertEqual(t_parse($this, '$obj->method()->method2()->prop1'), '$obj->method()->method2()->prop1;');
+    $this->assertEqual(t_parse($this, 
+'$obj
+->prop1'), 
+'$obj
+->prop1;');
+$this->assertEqual(t_parse($this, 
+'$obj
+->prop1
+->prop2'), 
+'$obj
+->prop1
+->prop2;');
+$this->assertEqual(t_parse($this, 
+'$obj
+->prop1
+->prop2
+->method()'), 
+'$obj
+->prop1
+->prop2
+->method();');
+$this->assertEqual(t_parse($this, 
+'$obj
+->prop1
+->method()'), 
+'$obj
+->prop1
+->method();');
+$this->assertEqual(t_parse($this, 
+'$obj
+->method()
+->prop1'), 
+'$obj
+->method()
+->prop1;');
+$this->assertEqual(t_parse($this, 
+'$obj
+->method()
+->method2()
+->prop1'), 
+'$obj
+->method()
+->method2()
+->prop1;');
   }
   function testMethodAccessor() {
     $this->assertEqual(t_parse($this, '$obj->method()'), '$obj->method();');
@@ -47,6 +91,15 @@ method3()'),
 method()->
 method2()->
 method3();');
+    $this->assertEqual(t_parse($this, 
+'$obj
+->method()
+->method2()
+->method3()'), 
+'$obj
+->method()
+->method2()
+->method3();');
     $this->assertEqual(t_parse($this, 
 '$obj
 ->method()
