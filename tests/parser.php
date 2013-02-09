@@ -172,6 +172,16 @@ while (true)
   something("infinitely");
 }
 ');
+    $this->assertEqual(t_parse($this, 
+'
+while ($row = mysql_fetch_array($result))
+  something($row[0])
+'), 
+'while ($row = mysql_fetch_array($result))
+{
+  something($row[0]);
+}
+');
   }
   function testIfs() {
     $this->assertEqual(t_parse($this, 
