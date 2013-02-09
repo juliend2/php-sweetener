@@ -114,6 +114,41 @@ method3();');
 ->method2()
 ->method3();');
   }
+
+  function testClasses() {
+    $this->assertEqual(t_parse($this, 
+'class Post
+  function __construct()
+    return "Something"'), 
+'class Post
+{
+  function __construct()
+  {
+    return "Something";
+  }
+}
+');
+    $this->assertEqual(t_parse($this, 
+'class Thing
+  function __construct()
+    return "Something"
+  function get_thing()
+    return $this->thing
+  '), 
+'class Thing
+{
+  function __construct()
+  {
+    return "Something";
+  }
+  function get_thing()
+  {
+    return $this->thing;
+  }
+}
+');
+  }
+
 }
 
 
