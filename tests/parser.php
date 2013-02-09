@@ -290,6 +290,15 @@ else
   print $arr[$i];
 }
 ');
+    $this->assertEqual(t_parse($this, 
+'foreach ($hash as $key => $value)
+  print $hash[$key]
+'), 
+'foreach ($hash as $key => $value)
+{
+  print $hash[$key];
+}
+');
   }
 
 }
