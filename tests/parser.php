@@ -8,12 +8,8 @@ class TestParser extends UnitTestCase {
     $this->parser = new Parser();
   }
 
-  function testBasic() {
-    $this->assertEqual($this->parser->set_code('$variable = 2')->parse(), '<?php
-
-$variable = 2;
-
-');
+  function testVariable() {
+    $this->assertEqual(t_parse($this, '$variable = 2'), '$variable = 2;');
   }
 }
 
