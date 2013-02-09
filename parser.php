@@ -104,7 +104,9 @@ class Parser {
       if (
          trim($line) == '' # is empty
       || preg_match('/^(class|while|function|if|else|elseif|public|private|static|abstract)\s?/', trim($line)) # starts with a keyword that precedes something that doesnt end with a semicolon
-      || preg_match('/^\.$/', trim($line)) # ends with a dot
+      || preg_match('/\.$/', trim($line)) # ends with a dot
+      || preg_match('/->$/', trim($line)) # ends with an arrow
+      || (!empty($input_lines[$key+1]) && preg_match('/^->/', trim($input_lines[$key+1]))) # next line starts with an arrow
       ) { 
         # as is
         $semicol_lines[] = $line;
