@@ -1,8 +1,15 @@
 #!/usr/bin/php
 <?php
 
+$usage = "Usage:
+  phpsweeten input.phps -o output.php
+
+";
+
 include realpath(dirname(__FILE__).'/../phpsweetener.php');
-$path = $argv[1];
+$path = !empty($argv[1]) ? $argv[1] : '';
+$opt = !empty($argv[2]) ? $argv[2] : '';
+$output_path = !empty($argv[3]) ? $argv[3] : '';
 if (empty($path)) {
   print "You need to provide a file name to compile.\n";
   die;
@@ -12,6 +19,11 @@ $sweet_code = file_get_contents($path);
 $sweetener = new Parser($sweet_code);
 $php_code = $sweetener->parse();
 
-echo $php_code;
+if ($opt == '-o' && !empty($output_path)) {
+  # compiler
+  $sweetener->outputter->compile_to($output_path);
+} else {
+  echo $php_code;
+}
 
 # vim: set filetype=php

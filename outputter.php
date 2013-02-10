@@ -12,5 +12,10 @@ class Outputter {
     $prog .= join("\n", $this->lines);
     return $prog;
   }
+  public function compile_to($path) {
+    $fp = fopen($path, 'w');
+    fwrite($fp, $this->get_string());
+    fclose($fp);
+  }
 }
 

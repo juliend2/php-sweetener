@@ -1,9 +1,11 @@
 <?php
 
 class Parser {
+
   function __construct($sweet_code='') {
     $this->indent = '  ';
     $this->set_code($sweet_code);
+    $this->outputter = null;
   }
 
   public function set_code($sweet_code) {
@@ -28,8 +30,8 @@ class Parser {
 
     $lines = $this->remove_lines_before_elses($lines);
 
-    $outputter = new Outputter($lines);
-    return $outputter->get_string();
+    $this->outputter = new Outputter($lines);
+    return $this->outputter->get_string();
   }
 
   private function add_braces($lines) {

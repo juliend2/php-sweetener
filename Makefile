@@ -3,4 +3,5 @@ debug:
 
 test:
 	php tests/parser.php
+	php tests/output.php
 
