@@ -31,7 +31,7 @@ Here is an example of a "Sweet PHP" program:
 Compiling a Sweet PHP program
 ---
 
-    bin/phpsweeten ./path/to/prog.phps
+    bin/phpsweeten ./path/to/sweet/prog.phps -o ./path/to/php/prog.php
 
 TODO
 ---
