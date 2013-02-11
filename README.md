@@ -43,6 +43,8 @@ TODO
 * Multi-line comments
 * Multi-line strings (I want to implement CoffeeScript-like multi-line strings,
   that would compile to Heredoc strings.
+* Hashes (Multi-dimensional arrays)
+* Anonymous functions
 
 License
 ---
